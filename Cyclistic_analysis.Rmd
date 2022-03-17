@@ -1,0 +1,495 @@
+---
+title: "Cyclistic_data"
+output: html_notebook
+
+---
+
+#Introduction
+
+The Capstone Case Study #1 is analyzing data for a fictional company, Cyclistic, and answering key business questions for the company based on this analysis. My analysis will be performed using the R programming language, within RStudio.
+
+Google has provided a Case Study Roadmap, which I will incorporate into this notebook as I walk through the analysis.
+
+#The Scenario
+
+At Cyclistic, a bike-share company in Chicago, the director of marketing believes the company's future success depends on maximizing the number of memberships.
+
+The Cyclistic team wants to understand how casual riders and annual members use Cyclistic bikes differently.
+
+Based on these insights, our team will prepare a new marketing strategy to convert casual riders into annual members.
+
+#The Characters & Team
+
+The team consists of the following:
+
+1.Cyclistic: The bike-share program, featuring more than 5,800 bicycles and 600 docking stations.
+
+2.Lily Moreno: The director of marketing and my manager.
+
+3.Cyclistic marketing analytics team: A team of data analysts responsible for collecting, analyzing, and reporting data that helps guide Cyclistic marketing strategy.
+
+4.Cyclistic executive team: The notoriously detail-oriented executive team will decide whether to approve the recommended marketing program.
+
+#The Company
+
+Cyclistic launched a bike-share offering in 2016. Since then, they have grown to a fleet of 5,824 bicycles that are geotracked and locked into a network of 692 stations across Chicago. The bikes can be unlocked from one station and returned to any other station in the system at any time.
+
+Until now, Cyclistic's marketing strategy relied on building general awareness and appealing to broad consumer segments. One approach that helped make these things possible was the flexibility of its pricing plans: single-ride passes, full-day passes, and annual memberships.
+
+Customers who purchase single-ride or full-day passes are referred to as casual riders. Customers who purchase annual memberships are Cyclistic members.
+
+Cyclistic's finance analysts have concluded that annual members are much more profitable than casual riders. Moreno's hypothesis is that maximizing the number of annual members will be key to future growth, and believes there is a good chance to convert casual riders into members.
+
+Moreno has set a clear goal: Design marketing strategies aimed at converting casual riders into annual members.
+
+#OBJECTIVE
+
+Understanding how casual riders and annual members use Cyclistic bikes differently and from these insights,your team will design a new marketing strategy to convert casual riders into annual members.
+
+
+#PHASE 1: ASK
+
+GUIDING QUESTIONS
+
+1.What is the problem you are trying to solve?
+  Understanging how casual riders and annual members use Cyclistic bikes
+  differently
+
+2.How can your insights drive business decisions?
+  My insights can drive business decisions by reviewing and producing data that   either aligns with the company's hypothesis, or provides reasoning why the      hypothesis may be incorrect. And using this the ream can decise a new           marketing strategy appropriately.
+  
+DELIVERABLE
+
+  A clear statement of bussiness task:
+    How casual riders and annual members use Cyclistic bikes differently.
+    
+#PHASE 2:PREPARE
+
+GUIDING QUESTIONS
+1.Where is your data located?
+
+  Google provided a data bucket in the Case Study overview, located in            https://divvy-tripdata.s3.amazonaws.com/index.htmL.
+  
+
+2.How is the data organized?
+
+  In the Divvy bucket, the files are stored by month as CSV files. I downloaded   the last 12 months of reports, ranging from the period March 2021 to February   2022. The total file size of all CSV files combined was over 1GB.
+
+3.Are there issues with bias or credibility in this data? Does your data ROCCC?
+
+  I do not see any issues with bias or credibility with this data. In review the   data, it is considered good data under ROCCC standards, as it's reliable,       original, comprehensive, current, and cited.
+
+4.How are you addressing licensing, privacy, security, and accessibility?
+
+  The data is provided by the company that produces the service and made          available by Motivate International Inc. under                                  https://www.divvybikes.com/data-license-agreement.It does not contain personal
+  information of the riders and instead uses an individual ID    for each ride,   so there are no privacy/security concerns.
+
+5.How does it help you answer your question?
+
+  This helps me answer my question because I will be able to analyze the          ride-share data to see how members and casual riders use the bike-share         differently.
+
+6.Are there any problems with the data?
+
+  There aren't any problems with the data. 
+  
+DELIVERABLES
+  Discription of data sources:
+    Uses Cyclistic’s historical trip data from the period from march 2021 to        february 2022 to analyze and identify trends.
+    
+#PHASE 3:PROCESS
+
+GUIDING QUESTIONS
+
+1.What tools are choosing and why?
+
+  For this analysis I use R Programming with RStudio.
+  RStudio cloud have a limited RAM  and the data using heris over 1GB.
+
+2.How you ensured data's integirity?
+
+  I have created the backup files with the original CSV files.
+
+3.What steps have you taken to ensure that your data is clean?
+  
+  The cleaning steps are shown below
+
+4.How can you verify that your data is clean and ready to analyze?
+
+  By continuesly and throughly checking the dataset throughout the process
+  
+5.Have you documented your cleaning process so you can review and share those results?
+
+  Yes,I have noted each steps through the process
+  
+DELIVERABLES
+
+  Documentation of any cleaning or manipulation of data
+
+  Installing the Packages
+  
+```{r}
+install.packages("tidyverse")
+```
+```{r}
+library(tidyverse)
+```
+```{r}
+install.packages("lubridate")
+install.packages("janitor")
+
+```
+```{r}
+library(lubridate)
+library(janitor)
+```
+
+== Uploading and reading the CSV files
+  
+  
+```{r}
+mar_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202103-divvy-tripdata.csv")
+
+```
+```{r}
+apr_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202104-divvy-tripdata.csv")
+may_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202105-divvy-tripdata.csv")
+jun_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202106-divvy-tripdata.csv")
+jul_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202107-divvy-tripdata.csv")
+aug_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202108-divvy-tripdata.csv")
+sep_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202109-divvy-tripdata.csv")
+oct_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202110-divvy-tripdata.csv")
+nov_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202111-divvy-tripdata.csv")
+dec_2021<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202112-divvy-tripdata.csv")
+jan_2022<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202201-divvy-tripdata.csv")
+feb_2022<-read_csv("C:/Users/HP/OneDrive/Desktop/casestudy1/1/202202-divvy-tripdata.csv")
+```
+
+
+Reviewing columns in each files to ensure that each have same columns
+
+```{r}
+
+colnames(mar_2021)
+colnames(apr_2021)
+colnames(mar_2021)
+colnames(apr_2021)
+colnames(jun_2021)
+colnames(jul_2021)
+colnames(aug_2021)
+colnames(sep_2021)
+colnames(oct_2021)
+colnames(nov_2021)
+colnames(dec_2021)
+colnames(jan_2022)
+colnames(feb_2022)
+```
+
+All column headers match. The next step will be inspecting the dataframes to look for incongruencies
+```{r}
+
+str(mar_2021)
+str(apr_2021)
+str(mar_2021)
+str(apr_2021)
+str(jun_2021)
+str(jul_2021)
+str(aug_2021)
+str(sep_2021)
+str(oct_2021)
+str(nov_2021)
+str(dec_2021)
+str(jan_2022)
+str(feb_2022)
+```
+
+Compaining all the files into a single file in the name "all_trips" which include data from the period march 2021 to february 2022
+```{r}
+all_trips<-bind_rows(mar_2021,apr_2021,may_2021,jun_2021,jul_2021,aug_2021,sep_2021,oct_2021,nov_2021,dec_2021,jan_2022,feb_2022)# binding all the tables into a single table
+```
+
+Reviewing columns in the dataframe all_trips 
+
+```{r}
+colnames(all_trips)
+```
+
+```{r}
+head(all_trips)#shows the top 6 rows in the table
+```
+```{r}
+str(all_trips)
+```
+
+Saving the "all_trips" file
+
+```{r}
+write.csv(all_trips,"C:/Users/HP/OneDrive/Desktop/casestudy1/1/all_trips.csv")
+```
+
+
+#PHASE 4: ANALYSE
+
+GUIDING QUESTIONS
+
+1.How should you organize your data to perform analysis on it?
+  
+  Compined all the tables into a single file.
+  
+2.Has your data been properly formatted?
+
+  I created the day_of_week column from the column started_at. I remove the     starting latitude & longitude and ending   latitude & longitude as it was     out of scope for this analysis.Also created ride_length column from the       difference between ended_at column and started_at column.
+  
+3.What trends or relationships did you find in the data?
+
+  The most obvious trend is that casual riders uses bike mostly on sunday and   saturday while memebers mostly uses it on weekdays.
+
+4.How will these insights help answer your business questions?
+
+  This insight will help ro undersand how ride type use bike share differently
+  
+DELIVERALES
+Remove the latitude and longitude data as it is not needed for analysis
+
+```{r}
+all_trips<-subset(all_trips,select = -c(start_lat,start_lng,end_lat,end_lng))
+````
+
+```{r}
+all_trips<-subset(all_trips,select = -c(end_lng))
+```
+
+
+Reviewing the columns after removing longitude and latitude columns
+```{r}
+colnames(all_trips)
+```
+
+
+Create a new column called “ride_length” to calculate the length of each ride by subtracting the column “started_at” from the column “ended_at”.
+
+```{r}
+all_trips$ride_length<-difftime(all_trips$ended_at,all_trips$started_at)
+```
+
+reviewing to check if the column is added
+
+```{r}
+colnames(all_trips)
+```
+
+Converting the ride_length from factor to number and then rechecking if it is numeric.
+
+```{r}
+all_trips$ride_length<-as.numeric(as.character(all_trips$ride_length))
+is.numeric(all_trips$ride_length)
+```
+
+
+Creating a new column called"day_of_week" and calculate the day of the week that each ride started.It will be helpfull to analyze daywise.
+```{r}
+all_trips$day_of_week <- format(as.Date(all_trips$started_at), "%A")
+```
+
+reviewing to check if the column is added
+```{r}
+head(all_trips)
+```
+
+View the total number of rows in the dataframe using the nrow() function, and the dimensions of the dataframe using the dim() function
+
+```{r}
+nrow(all_trips)
+```
+```{r}
+dim(all_trips)
+```
+showing the type of riders in a table
+
+```{r}
+table(all_trips$member_casual)
+```
+
+Cleaning:
+
+The dataset includes entries when bikes were taken out of docs and checked for quality by Divvy, or ride_length was negative. I'll need to remove this bad data, and then create a new version of the dataframe (v2) since I am removing data
+```{r}
+all_trips_2<-all_trips[!(all_trips$start_station_name =="HQ QR"|all_trips$ride_length<0),]
+```
+
+```{r}
+nrow(all_trips)
+nrow(all_trips_2)
+```
+
+Deleting all the rows with NA values
+
+```{r}
+all_trips_2<-filter(all_trips_2,day_of_week!="NA")
+
+```
+
+Reviewing the number of rows
+
+```{r}
+nrow(all_trips_2)
+```
+
+
+
+
+Conducting a descriptive analysis on ride_length
+
+
+```{r}
+
+summary(all_trips_2$ride_length)
+```
+
+Comparing the casual and member ride data
+
+```{r}
+aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual, FUN=mean)
+```
+
+```{r}
+aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual, FUN=median)
+```
+
+```{r}
+aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual, FUN=min)
+```
+
+```{r}
+aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual, FUN=max)
+```
+
+Reviewing the average ride length per each day for members Vs. casual riders.
+
+```{r}
+aggregate(all_trips_2$ride_length ~ all_trips_2$member_casual + all_trips_2$day_of_week,FUN=mean)
+```
+Analysing the ridership data by type and weekday 
+
+
+```{r}
+all_trips_2 %>%
+  mutate(weekday = wday(started_at,label = TRUE))%>%
+  group_by(member_casual,weekday)%>%
+  summarise(number_of_rides=n(),average_duration=mean(ride_length))%>%
+  arrange(member_casual,weekday)
+```
+
+#PHASE 5:SHARE
+
+GUIDING QUESTIONS
+
+1.Were you able to answer the question of how annual members and casual riders   use Cyclistic bikes differently?
+
+  Yes,with this data I will be able to answer how casual riders and annual      members use Cyclistic bikes differently
+
+2.Who is your audience? What is the best way to communicate with them?
+
+  My audience are the stakeholders of this project, in this case, the           marketing manager. Making a presentaion and a detailed report will be         effective in this situation.
+
+3.Can data visualization help you share your findings?
+
+  It will make the stakeholders easy to understand the findings.
+
+
+
+DELIVERABLES
+
+Supporing visualisation and key findings
+
+
+Creating a visualisation to look at the number of rides by rider type and day of week.
+
+```{r}
+all_trips_2%>%
+  mutate(weekday=wday(started_at,label = TRUE))%>%
+  group_by(member_casual,weekday)%>%
+  summarise(no_of_rides=n())%>%
+  arrange(member_casual,weekday)%>%
+  ggplot(aes(x=weekday,y=no_of_rides,fill=member_casual))+
+  geom_col(position="dodge")+
+  labs(x = "Day of Week", y = "Number of Rides", title = "Ride Count by Day of Week") +
+    scale_fill_manual(name = NULL, labels = c("Casual", "Member"), values = c("white", "blue")) +
+    scale_y_continuous(labels = scales::comma)
+
+```
+
+Creating a visualisation to look at the average ride length by rider type and day of week.
+
+```{r}
+all_trips_2%>%
+  mutate(weekday=wday(started_at,label = TRUE))%>%
+  group_by(member_casual,weekday)%>%
+  summarise(no_of_rides=n(),average_ride_length=mean(ride_length))%>%
+  arrange(member_casual,weekday)%>%
+  ggplot(aes(x=weekday,y=average_ride_length,fill=member_casual))+
+  geom_col(position="dodge")+
+  labs(x = "Day of Week", y = "Average Ride Length", title = "Average Ride Length by Day of Week") +
+    scale_fill_manual(name = NULL, labels = c("Casual", "Member"), values = c("white", "blue")) +
+    scale_y_continuous(labels = scales::comma)
+```
+
+
+
+
+```{r}
+all_trips_2%>%
+  #mutate(weekday=wday(started_at,label = TRUE))%>%
+  group_by(member_casual)%>%
+  summarise(no_of_rides=n())%>%
+  arrange(member_casual)%>%
+  ggplot(aes(x=member_casual,y=no_of_rides,fill=member_casual))+
+  geom_col(position="dodge")+
+  labs(x = "Day of Week", y = "Average Ride Length", title = "Average Ride Length by Day of Week") +
+    scale_fill_manual(name = NULL, labels = c("Casual", "Member"), values = c("white", "blue")) +
+    scale_y_continuous(labels = scales::comma)
+```
+Creating a visualisation to changing over the month
+
+
+
+```{r}
+all_trips_2%>%
+  mutate(month=month(started_at,label = TRUE))%>%
+  group_by(member_casual,month)%>%
+  summarise(no_of_rides=n())%>%
+  arrange(member_casual,month)%>%
+  ggplot(aes(x=month,y=no_of_rides,fill=member_casual))+
+  geom_col(position="dodge")+
+  labs(x = "Month", y = "Number of Rides", title = "Number of rides per month") +
+    scale_fill_manual(name = NULL, labels = c("Casual", "Member"), values = c("white", "blue")) +
+    scale_y_continuous(labels = scales::comma)
+```
+
+
+
+#PHASE 6: ACT
+
+GUIDING QUESTIONS
+
+1.What is your final conclusion based on your analysis?
+
+  The main aim of this analysis is to design a new marketing strategy to        casual riders to annual members.From the analysis,it can be concluded that    most of the casual riders uses the bike on weekend for their lesiure          purposes and the annual members use the bike mostly on weekdays for their     day to day purpose.By monthly wise,use of both casual and mebers vary         differently.
+  
+DELIVERABLES
+
+  Top three recommendations based on your analysis
+  
+1.Focus on weekends:
+
+  Casual users mostlt uses bike on weekends.Adding additional ads or marketing   strategies in the stations to attract the riders will be more effective.
+  
+2.Industrial Based Marketing:
+
+  Since people are using bikes for daily commute,by focusing on industrial      based areas or giving packages for companies will able to attarct more
+  people.
+  
+3.Public Transport and Public places:
+
+  Adverticing on areas like taxis,bus or public areas like streetwals and bus   stop when be more noticeble .
+
+
